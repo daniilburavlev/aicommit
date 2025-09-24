@@ -1,8 +1,5 @@
+use crate::utils::fs::read_from_home_dir;
 use std::collections::HashMap;
-use std::env::home_dir;
-use std::fs::OpenOptions;
-use std::io::Read;
-use std::process::exit;
 
 pub struct Prop {
     properties: HashMap<String, String>,
@@ -10,28 +7,13 @@ pub struct Prop {
 
 impl Prop {
     pub fn new(filename: &str) -> Self {
-        if let Some(mut home_dir) = home_dir() {
-            home_dir.push(filename);
-            if let Ok(mut file) = OpenOptions::new()
-                .create(true)
-                .read(true)
-                .write(true)
-                .open(home_dir)
-            {
-                let mut properties = String::new();
-                if let Ok(_) = file.read_to_string(&mut properties) {
-                    let properties = Prop::parse(properties);
-                    Self { properties }
-                } else {
-                    eprintln!("Cannot read properties file");
-                    exit(1);
-                }
-            } else {
-                eprintln!("Cannot open properties file");
-                exit(1);
-            }
-        } else {
-            exit(1);
+        if let Some(data) = read_from_home_dir(filename) {
+            return Self {
+                properties: Prop::parse(data),
+            };
+        }
+        Self {
+            properties: HashMap::new(),
         }
     }
 
