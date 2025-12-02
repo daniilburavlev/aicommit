@@ -1,8 +1,8 @@
-use std::process::{exit, Command};
+use std::process::{Command, exit};
 
 pub fn diff() -> String {
     if let Ok(output) = Command::new("git")
-        .args(&["diff", "--cached", "--diff-algorithm=minimal"])
+        .args(["diff", "--cached", "--diff-algorithm=minimal"])
         .output()
     {
         if !output.status.success() {

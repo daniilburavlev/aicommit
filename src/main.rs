@@ -1,4 +1,4 @@
-use crate::cli::cli::run;
+use crate::cli::program::run;
 
 mod cli;
 mod client;

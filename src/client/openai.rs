@@ -50,7 +50,7 @@ impl<'a> OpenAiClient<'a> {
             }))
             .send()?;
         let response_text: Response = response.json()?;
-        if let Some(choice) = response_text.choices.get(0) {
+        if let Some(choice) = response_text.choices.first() {
             Ok(choice.message.content.clone())
         } else {
             Err(std::io::Error::new(std::io::ErrorKind::InvalidData, "Cannot get ").into())

@@ -7,13 +7,13 @@ pub fn write_to_home_dir(filename: &str, data: &str) -> bool {
         home_dir.push(filename);
         if let Ok(mut file) = OpenOptions::new()
             .create(true)
+            .truncate(true)
             .read(true)
             .write(true)
             .open(home_dir)
+            && file.write_all(data.as_bytes()).is_err()
         {
-            if let Err(_) = file.write_all(data.as_bytes()) {
-                return false;
-            }
+            return false;
         }
         true
     } else {
@@ -21,18 +21,18 @@ pub fn write_to_home_dir(filename: &str, data: &str) -> bool {
     }
 }
 
-
 pub fn read_from_home_dir(filename: &str) -> Option<String> {
     if let Some(mut home_dir) = home_dir() {
         home_dir.push(filename);
         if let Ok(mut file) = OpenOptions::new()
             .create(true)
+            .truncate(true)
             .read(true)
             .write(true)
             .open(home_dir)
         {
             let mut data = String::new();
-            if let Ok(_) = file.read_to_string(&mut data) {
+            if file.read_to_string(&mut data).is_ok() {
                 return Some(data);
             }
         }

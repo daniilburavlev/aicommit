@@ -1,3 +1,3 @@
 mod command;
-pub mod cli;
 mod diff;
+pub mod program;

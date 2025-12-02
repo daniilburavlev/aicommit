@@ -27,10 +27,6 @@ impl Prop {
     }
 
     pub fn get(&self, key: &str) -> Option<String> {
-        if let Some(value) = self.properties.get(key) {
-            Some(value.to_owned())
-        } else {
-            None
-        }
+        self.properties.get(key).map(|value| value.to_owned())
     }
 }
