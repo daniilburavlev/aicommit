@@ -13,8 +13,6 @@ pub enum Command {
         open_ai_url: Option<String>,
         #[arg(long, env = "OPENAI_KEY", help = "OpenAI API key")]
         open_ai_key: Option<String>,
-        #[arg(long, help = "Comming language, i.e 'hebrew'")]
-        lang: Option<String>,
     },
 }
 
@@ -33,12 +31,10 @@ pub fn handle_subcommand(command: Command) {
         Command::Set {
             open_ai_url,
             open_ai_key,
-            lang,
         } => {
             let config = Config {
                 open_ai_url,
                 open_ai_key,
-                lang,
             };
             config.save();
         }
