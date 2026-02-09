@@ -26,9 +26,11 @@ pub fn run_diff() {
         eprintln!("OpenAI key is not set, please configure it. More info --help");
         exit(1);
     };
+    let lang = config.lang.unwrap_or("english".to_string());
+    let prompt = BASIC_PROMPT.replace("{locale}", &lang);
     let client = OpenAiClient::new(&open_ai_url, &open_ai_key);
     let diff = diff::diff();
-    match client.ask(&format!("{}\n\n{}", BASIC_PROMPT, diff)) {
+    match client.ask(&format!("{}\n\n{}", prompt, diff)) {
         Ok(response) => {
             println!("{}", response);
         }
